@@ -3,6 +3,7 @@ const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
 const supabase = supabase.createClient(supabaseUrl,supabaseKey);
 
+
 // 用户登录
 async function login() {
   console.log("Sign-up button clicked");  // 添加日志
