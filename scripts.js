@@ -5,6 +5,7 @@ const supabase = supabase.createClient(https://zkhgypnrzyzqdpnkgido.supabase.co,
 
 // 用户登录
 async function login() {
+  console.log("Sign-up button clicked");  // 添加日志
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
