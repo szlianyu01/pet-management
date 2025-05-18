@@ -6,7 +6,7 @@ const supabase = supabase.createClient(supabaseUrl,supabaseKey);
 
 // 用户登录
 async function login() {
-  console.log("Sign-up button clicked");  // 添加日志
+  console.log("login button clicked");  // 添加日志
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
@@ -23,6 +23,7 @@ async function login() {
 
 // 用户注册
 async function signUp() {
+  console.log("Sign-up button clicked");  // 添加日志
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
