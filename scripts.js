@@ -2,7 +2,7 @@
 const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
 const supabase = supabase.createClient(supabaseUrl,supabaseKey);
-
+console.log(supabase); // 查看 supabase 是否初始化成功
 
 // 用户登录
 async function login() {
