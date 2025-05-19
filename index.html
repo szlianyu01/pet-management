@@ -7,8 +7,8 @@
   <script>
     // 等待 DOM 加载完成后再执行初始化
     window.addEventListener('DOMContentLoaded', () => {
-      const supabaseUrl = 'https://你的项目ID.supabase.co';
-      const supabaseKey = '你的anon-key';
+      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODk';
       const supabase = supabase.createClient(supabaseUrl, supabaseKey);
       console.log('Supabase object:', supabase);
       window.supabase = supabase; // 方便后续调试和访问
