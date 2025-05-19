@@ -1,38 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pet Management</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- 引入 Supabase SDK -->
+  <meta charset="UTF-8" />
+  <title>Supabase Init Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    // 等待 DOM 加载完成后再执行初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      const supabaseUrl = 'https://你的项目ID.supabase.co';
+      const supabaseKey = '你的anon-key';
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      console.log('Supabase object:', supabase);
+      window.supabase = supabase; // 方便后续调试和访问
+    });
+  </script>
 </head>
 <body>
-  <h1>Pet Management</h1>
-  <p>Test Supabase initialization</p>
-
-  <script>
-    // 初始化 supabase 客户端（在所有其他代码之前）
-    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';  // 替换成你自己的 URL
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换成你自己的 anon key
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-    // 打印 supabase 对象，检查初始化是否成功
-    console.log(supabase);  // 控制台会输出 supabase 对象
-
-    // 用户注册功能（supabase 初始化之后）
-    async function signUp() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      const { user, error } = await supabase.auth.signUp({ email, password });
-
-      if (error) {
-        alert('Sign-up error: ' + error.message);
-      } else {
-        alert('Check your email for confirmation!');
-      }
-    }
-  </script>
+  <h1>Supabase Init Test Page</h1>
+  <p>打开浏览器控制台看是否有 Supabase 对象输出</p>
 </body>
 </html>
+
 
