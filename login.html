@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Pet Management</title>
+</head>
+<body>
+  <h1>Login</h1>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+  <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+
+  <script>
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      const { user, error } = await supabase.auth.signIn({ email, password });
+      
+      if (error) {
+        alert('Login error: ' + error.message);
+      } else {
+        alert('Login successful!');
+        window.location.href = 'pet-management.html'; // Redirect to pet management page after successful login
+      }
+    }
+  </script>
+</body>
+</html>
