@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Supabase Init Test</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    // 等待 DOM 加载完成后再执行初始化
-    window.addEventListener('DOMContentLoaded', () => {
-      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODk';
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-      console.log('Supabase object:', supabase);
-      window.supabase = supabase; // 方便后续调试和访问
-    });
-  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Supabase Initialization Test</title>
+<!-- 引入 Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+<script>
+  // 确保 DOM 加载完成后初始化 supabase
+  window.addEventListener('DOMContentLoaded', () => {
+    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';  // 替换成你的 URL
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换成你的 anon key
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    console.log('Supabase 对象:', supabase);
+
+    // 把 supabase 挂载到全局，方便调试
+    window.supabase = supabase;
+  });
+</script>
 </head>
 <body>
-  <h1>Supabase Init Test Page</h1>
-  <p>打开浏览器控制台看是否有 Supabase 对象输出</p>
+<h1>Supabase 初始化测试页面</h1>
+<p>请打开浏览器控制台查看是否打印了 Supabase 对象。</p>
 </body>
 </html>
 
