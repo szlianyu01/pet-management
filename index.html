@@ -3,16 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pet Management</title>
+  <title>Supabase Initialization Test</title>
+  
+  <!-- 引入 Supabase SDK, 使用 defer 确保它在所有脚本执行前加载 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+
+  <!-- 使用 defer 确保此脚本在 DOM 加载和 Supabase SDK 加载完成后执行 -->
+  <script defer>
+    window.onload = function() {
+      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';// 替换为你的 Supabase URL
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';// 替换为你的 anon key
+
+      // 初始化 Supabase 客户端
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      
+      // 确认 Supabase 初始化是否成功
+      console.log('Supabase client:', supabase); // 你会看到 supabase 对象输出
+
+      // 在这里使用 supabase 进行后续操作，如用户登录、注册、获取数据等
+    };
+  </script>
 </head>
 <body>
-  <h1>Welcome to Pet Management!</h1>
-  <p>Manage your pets with ease using Supabase.</p>
-  <a href="login.html">Login</a> | <a href="signup.html">Sign Up</a>
-  <br />
-  <a href="pet-management.html">Go to Pet Management</a>
+  <h1>Supabase 初始化测试页面</h1>
+  <p>打开浏览器控制台，查看是否正确打印 Supabase 对象。</p>
 </body>
 </html>
-
-
 
