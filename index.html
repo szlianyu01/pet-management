@@ -1,42 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Pet Management</title>
-  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- 引入 Supabase SDK -->
+  <script>
+    // 这里初始化 supabase
+    const supabaseUrl = 'https://你的项目ID.supabase.co';
+    const supabaseKey = '你的anon-key';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    console.log(supabase);  // 确认 supabase 是否初始化成功
+  </script>
 </head>
 <body>
-  <div class="container">
-    <h1>Pet Information Management</h1>
-    
-    <div id="auth">
-      <h3>Login</h3>
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button onclick="login()">Login</button>
-      <button onclick="signUp()">Sign Up</button>
-    </div>
-
-    <div id="pets" style="display: none;">
-      <h3>Your Pets</h3>
-      <button onclick="addPet()">Add New Pet</button>
-      <div id="petList"></div>
-    </div>
-
-    <div id="addPetForm" style="display: none;">
-      <h3>Add Pet</h3>
-      <input type="text" id="petName" placeholder="Pet Name" required />
-      <input type="text" id="petSpecies" placeholder="Species" required />
-      <input type="text" id="petBreed" placeholder="Breed" required />
-      <input type="date" id="petBirthday" placeholder="Birthday" required />
-      <input type="file" id="petImage" />
-      <textarea id="petDescription" placeholder="Pet Description" required></textarea>
-      <button onclick="submitPet()">Submit</button>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- Supabase SDK -->
-  <script src="scripts.js"></script>
+  <h1>Pet Management</h1>
 </body>
 </html>
+
