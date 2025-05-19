@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pet Management</title>
+  <title>ttttt Pet Management tttttttttttt </title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- 引入 Supabase SDK -->
+  <script>
+    // 这里初始化 supabase
+    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    console.log(supabase);  // 确认 supabase 是否初始化成功
+  </script>
 </head>
 <body>
-  <h1>Welcome to Pet Management!</h1>
-  <p>If you're seeing this, the page is working correctly.</p>
+  <h1>Pet Management</h1>
 </body>
 </html>
-
 
