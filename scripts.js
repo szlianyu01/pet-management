@@ -1,7 +1,10 @@
 // 初始化 Supabase 客户端
+
 const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';  // 你的 supabase URL
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 你的 anon key
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);  // 初始化 Supabase 客户端
+
+console.log(supabase); // 确认是否成功初始化
 
 // 用户登录
 async function login() {
