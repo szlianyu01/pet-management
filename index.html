@@ -4,24 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Supabase Initialization Test</title>
-<!-- 引入 Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
 <script>
-  // 确保 DOM 加载完成后初始化 supabase
-  window.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';  // 替换成你的 URL
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';// 替换成你的 anon key
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-    console.log('Supabase 对象:', supabase);
+  window.onload = function() {
+    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
 
-    // 把 supabase 挂载到全局，方便调试
-    window.supabase = supabase;
-  });
+    // 这里用 client 变量接收实例，避免和全局 supabase 变量冲突
+    const client = supabase.createClient(supabaseUrl, supabaseKey);
+    console.log('Supabase client:', client);
+
+    window.supabase = client;
+  };
 </script>
 </head>
 <body>
 <h1>Supabase 初始化测试页面</h1>
-<p>请打开浏览器控制台查看是否打印了 Supabase 对象。</p>
+<p>打开浏览器控制台，查看 supabase client 是否正确打印</p>
 </body>
 </html>
 
