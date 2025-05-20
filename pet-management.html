@@ -17,14 +17,14 @@
 
       // 获取当前用户的宠物
       async function getPets() {
-        const user = supabase.auth.user();  // 获取当前用户
+        const user = supabase1.auth.user();  // 获取当前用户
         if (!user) {
           console.log('No user found. User is not logged in.');
           return; // 如果没有用户登录，停止执行
         }
 
         // 获取宠物数据
-        const { data, error } = await supabase.from('pets').select('*').eq('owner_id', user.id);
+        const { data, error } = await supabase1.from('pets').select('*').eq('owner_id', user.id);
         if (error) {
           alert('Error fetching pets: ' + error.message);
         } else {
@@ -49,10 +49,10 @@
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        const { user } = supabase.auth;  // 获取当前用户
+        const { user } = supabase1.auth;  // 获取当前用户
 
         if (user) {
-          const { error } = await supabase.from('pets').insert([
+          const { error } = await supabase1.from('pets').insert([
             {
               owner_id: user.id,
               name: petName,
