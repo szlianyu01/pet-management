@@ -6,20 +6,21 @@
   <title>Pet Management</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
   <script defer>
-    window.onload = function() {
+    window.onload = async function() {
       // 初始化 Supabase 客户端
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
-      const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);  // 创建 Supabase 客户端
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-      console.log('Supabase client initialized:', supabase1); // 确认 Supabase 是否正确初始化
+      // 确认 supabase 是否已初始化
+      console.log('Supabase client initialized:', supabase);
 
       // 获取当前用户的宠物
       async function getPets() {
-        const user = supabase.auth.user();  // 获取当前用户信息
+        const user = supabase.auth.user();  // 获取当前用户
         if (!user) {
-          console.log('User is not logged in');
-          return;  // 如果用户未登录，停止执行
+          console.log('No user found. User is not logged in.');
+          return; // 如果没有用户登录，停止执行
         }
 
         // 获取宠物数据
@@ -48,7 +49,7 @@
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        const { user } = supabase.auth;
+        const { user } = supabase.auth;  // 获取当前用户
 
         if (user) {
           const { error } = await supabase.from('pets').insert([
@@ -65,15 +66,15 @@
             alert('Error adding pet: ' + error.message);
           } else {
             alert('Pet added successfully!');
-            getPets(); // Reload pets
+            getPets(); // 重新获取宠物信息
           }
         } else {
           alert('You need to log in first!');
         }
       }
 
-      // 初始时获取宠物信息
-      getPets();
+      // 确保客户端初始化成功后再获取宠物
+      await getPets();
 
       // 将 addPet 函数绑定到按钮
       document.getElementById('add-pet-button').onclick = addPet;
