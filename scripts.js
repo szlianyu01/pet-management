@@ -7,7 +7,7 @@ async function login() {
     alert('Login error: ' + error.message);
   } else {
     alert('Login successful!');
-    window.location.href = 'pet-management.html'; // Redirect to pet management page after successful login
+    window.location.href = 'pet-management.html';
   }
 }
 
@@ -19,7 +19,7 @@ async function signUp() {
     alert('Sign-up error: ' + error.message);
   } else {
     alert('Check your email for confirmation!');
-    window.location.href = 'login.html'; // Redirect to login page after successful sign up
+    window.location.href = 'login.html';
   }
 }
 
