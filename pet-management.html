@@ -6,23 +6,29 @@
   <title>Pet Management</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
   <script defer>
-    window.onload = async function() {
-      // 确保在此时初始化 Supabase 客户端
+    window.onload = function() {
+      // 先初始化 supabase 客户端
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
       const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // 确认 Supabase 初始化成功
+      // 确保 supabase 初始化后再执行操作
       console.log('Supabase client initialized:', supabase1);
 
       // 获取当前用户的宠物
       async function getPets() {
         try {
+          // 确保 supabase.auth 已经准备好
+          if (!supabase.auth) {
+            console.error('Supabase auth not initialized.');
+            return;
+          }
+
           const user = supabase.auth.user();  // 获取当前用户信息
           console.log('Current user:', user);  // 打印当前用户，帮助调试
 
           if (!user) {
-            console.log('User is not logged in');  // 如果用户没有登录，打印日志并停止执行
+            console.log('User is not logged in');  // 如果用户未登录，打印日志并停止执行
             return;
           }
 
