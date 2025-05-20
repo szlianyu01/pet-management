@@ -13,7 +13,7 @@
 
       // 获取当前用户的宠物
       async function getPets() {
-        const user = supabase1.auth.user();
+        const user = supabase.auth.user();
         if (user) {
           const { data, error } = await supabase1.from('pets').select('*').eq('owner_id', user.id);
           if (error) {
@@ -41,7 +41,7 @@
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        const { user } = supabase1.auth;
+        const { user } = supabase.auth;
 
         if (user) {
           const { error } = await supabase1.from('pets').insert([
