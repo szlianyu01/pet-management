@@ -7,35 +7,43 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
   <script defer>
     window.onload = async function() {
-      // 初始化 Supabase 客户端
+      // 确保在此时初始化 Supabase 客户端
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
       const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // 确认 supabase 是否已初始化
+      // 确认 Supabase 初始化成功
       console.log('Supabase client initialized:', supabase1);
 
       // 获取当前用户的宠物
       async function getPets() {
-        const user = supabase.auth.user();  // 获取当前用户
-        if (!user) {
-          console.log('No user found. User is not logged in.');
-          return; // 如果没有用户登录，停止执行
-        }
+        try {
+          const user = supabase.auth.user();  // 获取当前用户信息
+          console.log('Current user:', user);  // 打印当前用户，帮助调试
 
-        // 获取宠物数据
-        const { data, error } = await supabase.from('pets').select('*').eq('owner_id', user.id);
-        if (error) {
-          alert('Error fetching pets: ' + error.message);
-        } else {
-          displayPets(data);  // 显示宠物信息
+          if (!user) {
+            console.log('User is not logged in');  // 如果用户没有登录，打印日志并停止执行
+            return;
+          }
+
+          // 获取宠物数据
+          const { data, error } = await supabase.from('pets').select('*').eq('owner_id', user.id);
+          if (error) {
+            console.error('Error fetching pets:', error.message);
+            alert('Error fetching pets: ' + error.message);
+          } else {
+            displayPets(data);  // 显示宠物信息
+          }
+        } catch (err) {
+          console.error('Error in getPets:', err);
+          alert('Error in getPets: ' + err.message);
         }
       }
 
       // 显示宠物信息
       function displayPets(pets) {
         const petList = document.getElementById('pet-list');
-        petList.innerHTML = '';
+        petList.innerHTML = ''; // 清空宠物列表
         pets.forEach(pet => {
           petList.innerHTML += `<div><strong>${pet.name}</strong> - ${pet.species}</div>`;
         });
@@ -63,6 +71,7 @@
             }
           ]);
           if (error) {
+            console.error('Error adding pet:', error.message);
             alert('Error adding pet: ' + error.message);
           } else {
             alert('Pet added successfully!');
@@ -73,8 +82,8 @@
         }
       }
 
-      // 确保客户端初始化成功后再获取宠物
-      await getPets();
+      // 调用 getPets 函数获取宠物信息
+      getPets();
 
       // 将 addPet 函数绑定到按钮
       document.getElementById('add-pet-button').onclick = addPet;
