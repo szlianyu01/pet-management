@@ -4,28 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Pet Management</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+  <script defer>
+    window.onload = function() {
+      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      
+      async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { user, error } = await supabase.auth.signIn({ email, password });
+
+        if (error) {
+          alert('Login error: ' + error.message);
+        } else {
+          alert('Login successful!');
+          window.location.href = 'pet-management.html'; // 登录后跳转到宠物管理页面
+        }
+      }
+
+      document.getElementById('login-button').onclick = login;
+    };
+  </script>
 </head>
 <body>
   <h1>Login</h1>
   <input type="email" id="email" placeholder="Email" />
   <input type="password" id="password" placeholder="Password" />
-  <button onclick="login()">Login</button>
+  <button id="login-button">Login</button>
   <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-
-  <script>
-    async function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      const { user, error } = await supabase.auth.signIn({ email, password });
-      
-      if (error) {
-        alert('Login error: ' + error.message);
-      } else {
-        alert('Login successful!');
-        window.location.href = 'pet-management.html'; // Redirect to pet management page after successful login
-      }
-    }
-  </script>
 </body>
 </html>
