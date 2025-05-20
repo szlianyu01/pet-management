@@ -15,10 +15,10 @@
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';// 替换为你的 anon key
 
       // 初始化 Supabase 客户端
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      const supabase_client = supabase.createClient(supabaseUrl, supabaseKey);
       
       // 确认 Supabase 初始化是否成功
-      console.log('Supabase client:', supabase); // 你会看到 supabase 对象输出
+      console.log('Supabase client:', supabase_client); // 你会看到 supabase 对象输出
 
       // 在这里使用 supabase 进行后续操作，如用户登录、注册、获取数据等
     };
