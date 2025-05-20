@@ -9,21 +9,25 @@
     window.onload = function() {
       // 初始化 Supabase 客户端
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey); // 创建 Supabase 客户端
+      const supabaseKey = '你的anon-key';
+      const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);  // 创建 Supabase 客户端
+
+      console.log('Supabase client initialized:', supabase1); // 确认 Supabase 是否正确初始化
 
       // 获取当前用户的宠物
       async function getPets() {
-        const user = supabase.auth.user();  // 正确调用 supabase.auth.user()
-        if (user) {
-          const { data, error } = await supabase.from('pets').select('*').eq('owner_id', user.id);
-          if (error) {
-            alert('Error fetching pets: ' + error.message);
-          } else {
-            displayPets(data);  // 显示宠物信息
-          }
+        const user = supabase.auth.user();  // 获取当前用户信息
+        if (!user) {
+          console.log('User is not logged in');
+          return;  // 如果用户未登录，停止执行
+        }
+
+        // 获取宠物数据
+        const { data, error } = await supabase.from('pets').select('*').eq('owner_id', user.id);
+        if (error) {
+          alert('Error fetching pets: ' + error.message);
         } else {
-          alert('You need to log in first!');
+          displayPets(data);  // 显示宠物信息
         }
       }
 
@@ -83,4 +87,3 @@
   <div id="pet-list"></div>
 </body>
 </html>
-
