@@ -7,13 +7,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
   <script defer>
     window.onload = function() {
+      // 初始化 Supabase 客户端
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
-      const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey); // 创建 Supabase 客户端
 
       // 获取当前用户的宠物
       async function getPets() {
-        const user = supabase.auth.user();
+        const user = supabase.auth.user();  // 正确调用 supabase.auth.user()
         if (user) {
           const { data, error } = await supabase.from('pets').select('*').eq('owner_id', user.id);
           if (error) {
@@ -21,6 +22,8 @@
           } else {
             displayPets(data);  // 显示宠物信息
           }
+        } else {
+          alert('You need to log in first!');
         }
       }
 
@@ -60,6 +63,8 @@
             alert('Pet added successfully!');
             getPets(); // Reload pets
           }
+        } else {
+          alert('You need to log in first!');
         }
       }
 
@@ -78,3 +83,4 @@
   <div id="pet-list"></div>
 </body>
 </html>
+
