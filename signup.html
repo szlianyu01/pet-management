@@ -4,28 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sign Up - Pet Management</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+  <script defer>
+    window.onload = function() {
+      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+      const supabaseKey = '你的anon-key';
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+      async function signUp() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { user, error } = await supabase.auth.signUp({ email, password });
+
+        if (error) {
+          alert('Sign-up error: ' + error.message);
+        } else {
+          alert('Check your email for confirmation!');
+          window.location.href = 'login.html'; // 注册后跳转到登录页面
+        }
+      }
+
+      document.getElementById('signup-button').onclick = signUp;
+    };
+  </script>
 </head>
 <body>
   <h1>Sign Up</h1>
   <input type="email" id="email" placeholder="Email" />
   <input type="password" id="password" placeholder="Password" />
-  <button onclick="signUp()">Sign Up</button>
+  <button id="signup-button">Sign Up</button>
   <p>Already have an account? <a href="login.html">Login</a></p>
-
-  <script>
-    async function signUp() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      const { user, error } = await supabase.auth.signUp({ email, password });
-
-      if (error) {
-        alert('Sign-up error: ' + error.message);
-      } else {
-        alert('Check your email for confirmation!');
-        window.location.href = 'login.html'; // Redirect to login page after successful sign up
-      }
-    }
-  </script>
 </body>
 </html>
