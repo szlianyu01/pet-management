@@ -41,7 +41,7 @@
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        const { user } = supabase.auth;
+        const { user } = supabase1.auth;
 
         if (user) {
           const { error } = await supabase1.from('pets').insert([
