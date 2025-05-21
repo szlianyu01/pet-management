@@ -71,8 +71,13 @@
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        const { user } = supabase1.auth;  // 获取当前用户
-        console.log('Supabase user:', user);
+        //const { user } = supabase1.auth;  // 获取当前用户
+        //console.log('Supabase user:', user);
+          const user = session.user; // 从 session 中获取用户信息
+          console.log(' add pet : Current user from session:', user);
+
+
+        
         if (user) {
           const { error } = await supabase1.from('pets').insert([
             {
