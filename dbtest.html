@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Supabase Read/Write Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    // 初始化 Supabase
+    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon-key
+    const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
+
+    window.onload = async function() {
+      // 测试：连接成功时打印 Supabase 客户端
+      console.log('Supabase client initialized:', supabase1);
+
+      // 测试添加数据
+      document.getElementById('add-pet-button').onclick = async function() {
+        const petName = prompt('Enter pet name:');
+        const petSpecies = prompt('Enter pet species:');
+        const petBreed = prompt('Enter pet breed:');
+        const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
+        const petDescription = prompt('Enter pet description:');
+
+        // 插入数据
+        const { data, error } = await supabase1
+          .from('pets')
+          .insert([
+            {
+              name: petName,
+              species: petSpecies,
+              breed: petBreed,
+              birthday: petBirthday,
+              description: petDescription
+            }
+          ]);
+
+        if (error) {
+          console.error('Error inserting pet:', error.message);
+          alert('Error inserting pet: ' + error.message);
+        } else {
+          console.log('Pet added successfully:', data);
+          alert('Pet added successfully!');
+          await getPets();  // 插入后立即获取并显示所有宠物
+        }
+      };
+
+      // 测试查询数据
+      async function getPets() {
+        const { data, error } = await supabase1
+          .from('pets')
+          .select('*');
+
+        if (error) {
+          console.error('Error fetching pets:', error.message);
+          alert('Error fetching pets: ' + error.message);
+        } else {
+          displayPets(data);  // 显示查询到的宠物数据
+        }
+      }
+
+      // 显示宠物信息
+      function displayPets(pets) {
+        const petList = document.getElementById('pet-list');
+        petList.innerHTML = ''; // 清空宠物列表
+
+        if (pets.length === 0) {
+          petList.innerHTML = '<div>No pets found.</div>'; // 没有宠物时显示
+        } else {
+          pets.forEach(pet => {
+            petList.innerHTML += `<div><strong>${pet.name}</strong> - ${pet.species}</div>`;
+          });
+        }
+      }
+
+      // 页面加载时先查询一次宠物数据
+      await getPets();
+    };
+  </script>
+</head>
+<body>
+  <h1>Supabase Pet Management Test</h1>
+  <button id="add-pet-button">Add Pet</button>
+  <h3>Your Pets</h3>
+  <div id="pet-list"></div>
+</body>
+</html>
