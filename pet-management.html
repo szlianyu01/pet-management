@@ -11,26 +11,30 @@
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
       const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // 确保 supabase.auth 初始化后再执行后续代码
+      // 确保 supabase 初始化成功
       console.log('Supabase client initialized:', supabase1);
 
-      // 监听认证状态变化
-      supabase1.auth.onAuthStateChange((event, session) => {
+      // 在用户认证状态变化时执行
+      supabase1.auth.onAuthStateChange(async (event, session) => {
         console.log('Auth state changed:', event, session);
 
+        // 确保用户已登录，才执行获取宠物数据的操作
         if (event === 'SIGNED_IN') {
-          getPets();  // 用户登录后获取宠物信息
+          // 在这里调用获取宠物数据的函数
+          await getPets();
         }
       });
 
       // 获取当前用户的宠物
       async function getPets() {
         try {
-          const user = supabase.auth.user();  // 获取当前用户信息
-          console.log('Current user:', user);  // 打印当前用户，帮助调试
+          // 获取当前用户信息
+          const user = supabase.auth.user();
+          console.log('Current user:', user);  // 打印当前用户信息，帮助调试
 
+          // 如果用户不存在，打印日志并退出
           if (!user) {
-            console.log('User is not logged in');  // 如果用户未登录，打印日志并停止执行
+            console.log('User is not logged in');
             return;
           }
 
@@ -90,8 +94,8 @@
         }
       }
 
-      // 初始化时调用 getPets 函数获取宠物信息
-      getPets();
+      // 调用 getPets 函数获取宠物信息
+      // getPets();
 
       // 将 addPet 函数绑定到按钮
       document.getElementById('add-pet-button').onclick = addPet;
