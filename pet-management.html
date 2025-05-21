@@ -29,11 +29,11 @@
       async function getPets() {
         try {
           // 获取当前用户信息
-          const user = supabase.auth.user();
-          console.log('Current user:', user);  // 打印当前用户信息，帮助调试
+          const user1 = supabase.auth.user();
+          console.log('Current user:', user1);  // 打印当前用户信息，帮助调试
 
           // 如果用户不存在，打印日志并退出
-          if (!user) {
+          if (!user1) {
             console.log('User is not logged in');
             return;
           }
