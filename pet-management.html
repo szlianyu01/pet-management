@@ -7,31 +7,36 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
   <script defer>
     window.onload = function() {
-      // 创建一个唯一的变量名，避免与 supabase 库名称冲突
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
-      const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);  // 使用不同的变量名
+      const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
 
       // 确保 supabase1 初始化成功
       console.log('Supabase client initialized:', supabase1);
 
-      // 在用户认证状态变化时执行
+      // 监听认证状态变化
       supabase1.auth.onAuthStateChange(async (event, session) => {
         console.log('Auth state changed:', event, session);
 
         if (event === 'SIGNED_IN') {
-          await getPets();
+          // 尝试从 session 中获取当前用户信息
+          const user = session.user; // 从 session 中获取用户信息
+          console.log('Current user from session:', user);
+
+          if (user) {
+            await getPets(user);  // 传递用户对象来获取宠物数据
+          } else {
+            console.log('User is not logged in');
+          }
         }
       });
 
       // 获取当前用户的宠物
-      async function getPets() {
+      async function getPets(user) {
         try {
-          const user = supabase1.auth.user();  // 获取当前用户信息
-          console.log('Current user:', user);  // 打印当前用户信息，帮助调试
-
+          // 如果没有用户信息，退出
           if (!user) {
-            console.log('User is not logged in');  // 如果用户未登录，打印日志并停止执行
+            console.log('User is not logged in');
             return;
           }
 
@@ -84,15 +89,12 @@
             alert('Error adding pet: ' + error.message);
           } else {
             alert('Pet added successfully!');
-            getPets(); // 重新获取宠物信息
+            getPets(user); // 重新获取宠物信息
           }
         } else {
           alert('You need to log in first!');
         }
       }
-
-      // 调用 getPets 函数获取宠物信息
-      getPets();
 
       // 将 addPet 函数绑定到按钮
       document.getElementById('add-pet-button').onclick = addPet;
@@ -106,5 +108,4 @@
   <div id="pet-list"></div>
 </body>
 </html>
-
 
