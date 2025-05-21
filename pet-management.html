@@ -48,6 +48,8 @@
          
           // 获取宠物数据
           const { data, error } = await supabase1.from('pets').select('*').eq('owner_id', user.id);
+          console.log('after select', error);
+          
           if (error) {
             console.log('error fetching pets');
             console.error('Error fetching pets:', error.message);
@@ -87,8 +89,16 @@
         const petDescription = prompt('Enter pet description:');
 
         const user = currentUser;  // 获取当前用户
-        console.log('prompt end');
-        console.log('currentuser',user);
+
+           console.log('Attempting to add pet:', {
+          owner_id: user.id,
+          name: petName,
+          species: petSpecies,
+          breed: petBreed,
+          birthday: petBirthday,
+          description: petDescription
+        });
+        
         
         if (!user) {
           alert('You need to log in first!');
