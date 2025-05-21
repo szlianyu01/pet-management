@@ -66,11 +66,16 @@
         const { data, error } = await supabase1
           .from('pets')
           .select('*');
-
+        console.log('getpets - select finished');  // 打印返回的数据
+    
         if (error) {
+           console.log('getpets - into error');  // 打印返回的数据
+    
           console.error('Error fetching pets:', error.message);
           alert('Error fetching pets: ' + error.message);
         } else {
+          console.log('call display pets');  // 打印返回的数据
+    
           displayPets(data);  // 显示查询到的宠物数据
         }
       }
