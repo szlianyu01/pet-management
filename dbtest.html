@@ -6,6 +6,10 @@
   <title>Supabase Read/Write Test</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
+
+
+    async function testSupabase() {
+
     // 初始化 Supabase
     const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon-key
@@ -65,7 +69,7 @@
           await getPets();  // 插入后立即获取并显示所有宠物
         }
       };
-
+    }
       // 测试查询数据
       async function getPets() {
         const { data, error } = await supabase1
