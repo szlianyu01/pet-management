@@ -6,41 +6,14 @@
   <title>Supabase Read/Write Test</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
+    // 需要将代码包装在一个 async 函数中
+    async function testSupabase() {
+      // 初始化 Supabase
+      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon-key
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    console.log('start');
-
-   // async function testSupabase() {
-    console.log('into testsupabase');
-    console.log('before init supabase');
-
-    // 初始化 Supabase
-    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon-key
-    const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
-    console.log('after init supabase');
-
-    //get all records.
-    console.log('before get all records');
-       const { data, error } = await supabase
-          .from('pets')
-          .select('*');
-
-        if (error) {
-          console.error('Error fetching pets:', error.message);
-          alert('Error fetching pets: ' + error.message);
-        } else {
-          console.log('get all records without error');
-
-          displayPets(data);  // 显示查询到的宠物数据
-        }
-    console.log('after get all records');
-     
-
-
-    
-    window.onload = async function() {
-      // 测试：连接成功时打印 Supabase 客户端
-      console.log('Supabase client initialized:', supabase1);
+      console.log('Supabase client initialized:', supabase);
 
       // 测试添加数据
       document.getElementById('add-pet-button').onclick = async function() {
@@ -50,33 +23,45 @@
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        // 插入数据
-        const { data, error } = await supabase1
-          .from('pets')
-          .insert([
-            {
-              owner_id:'1f9cd67b-0c3b-447d-952d-25e6cddd13ea',
-              name: petName,
-              species: petSpecies,
-              breed: petBreed,
-              birthday: petBirthday,
-              description: petDescription
-            }
-          ]);
+        console.log('Attempting to add pet:', {
+          name: petName,
+          species: petSpecies,
+          breed: petBreed,
+          birthday: petBirthday,
+          description: petDescription
+        });
 
-        if (error) {
-          console.error('Error inserting pet:', error.message);
-          alert('Error inserting pet: ' + error.message);
-        } else {
-          console.log('Pet added successfully:', data);
-          alert('Pet added successfully!');
-          await getPets();  // 插入后立即获取并显示所有宠物
+        try {
+          // 插入数据
+          const { data, error } = await supabase
+            .from('pets')
+            .insert([
+              {
+                name: petName,
+                species: petSpecies,
+                breed: petBreed,
+                birthday: petBirthday,
+                description: petDescription
+              }
+            ]);
+
+          if (error) {
+            console.error('Error inserting pet:', error.message);
+            alert('Error inserting pet: ' + error.message);
+          } else {
+            console.log('Pet added successfully:', data);  // 打印返回的数据
+            alert('Pet added successfully!');
+            await getPets();  // 插入后立即获取并显示所有宠物
+          }
+        } catch (err) {
+          console.error('Error during insert operation:', err);  // 捕获异常并输出
+          alert('Error during insert operation: ' + err.message);
         }
       };
-    //}
+
       // 测试查询数据
       async function getPets() {
-        const { data, error } = await supabase1
+        const { data, error } = await supabase
           .from('pets')
           .select('*');
 
@@ -104,7 +89,10 @@
 
       // 页面加载时先查询一次宠物数据
       await getPets();
-    };
+    }
+
+    // 在页面加载完成后执行
+    window.onload = testSupabase;
   </script>
 </head>
 <body>
