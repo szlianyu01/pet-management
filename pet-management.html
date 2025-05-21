@@ -109,7 +109,7 @@
            console.log('before insert');
         const { data, error } = await supabase1.from('pets').insert([
           {
-            owner_id: '1f9cd67b-0c3b-447d-952d-25e6cddd13ea',
+            owner_id: user_id,
             name: petName,
             species: petSpecies,
             breed: petBreed,
