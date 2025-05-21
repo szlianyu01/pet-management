@@ -33,10 +33,13 @@
 
         try {
           // 插入数据
-          const { data, error } = await supabase
+          console.log('before insert Pets');  // 打印返回的数据
+          
+          const { data, error } = await supabase1
             .from('pets')
             .insert([
               {
+                owner_id:'1f9cd67b-0c3b-447d-952d-25e6cddd13ea',
                 name: petName,
                 species: petSpecies,
                 breed: petBreed,
@@ -44,7 +47,8 @@
                 description: petDescription
               }
             ]);
-
+          console.log('after insert Pet');  // 打印返回的数据
+          
           if (error) {
             console.error('Error inserting pet:', error.message);
             alert('Error inserting pet: ' + error.message);
