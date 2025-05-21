@@ -120,6 +120,7 @@
         console.log('after insert');
         
         if (error) {
+          console.log('insert error');
           console.error('Error adding pet:', error.message);
           alert('Error adding pet: ' + error.message);
         } else {
