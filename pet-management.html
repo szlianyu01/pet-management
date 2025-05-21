@@ -14,17 +14,20 @@
       // 确保 supabase1 初始化成功
       console.log('Supabase client initialized:', supabase1);
 
+      // 存储当前用户
+      let currentUser = null;
+
       // 监听认证状态变化
       supabase1.auth.onAuthStateChange(async (event, session) => {
         console.log('Auth state changed:', event, session);
 
         if (event === 'SIGNED_IN') {
-          // 尝试从 session 中获取当前用户信息
-          const user = session.user; // 从 session 中获取用户信息
-          console.log('Current user from session:', user);
+          // 从 session 中获取用户信息并存储到 currentUser 变量
+          currentUser = session.user;
+          console.log('Current user from session:', currentUser);
 
-          if (user) {
-            await getPets(user);  // 传递用户对象来获取宠物数据
+          if (currentUser) {
+            await getPets(currentUser);  // 传递 currentUser 获取宠物数据
           } else {
             console.log('User is not logged in');
           }
@@ -65,39 +68,38 @@
 
       // 添加宠物
       async function addPet() {
+        // 使用 currentUser 来获取当前用户
+        const user = currentUser;  
+
+        if (!user) {
+          alert('You need to log in first!');
+          return;
+        }
+
         const petName = prompt('Enter pet name:');
         const petSpecies = prompt('Enter pet species:');
         const petBreed = prompt('Enter pet breed:');
         const petBirthday = prompt('Enter pet birthday (YYYY-MM-DD):');
         const petDescription = prompt('Enter pet description:');
 
-        //const { user } = supabase1.auth;  // 获取当前用户
-        //console.log('Supabase user:', user);
-      //    const user = session.user; // 从 session 中获取用户信息
-          console.log(' add pet : Current user from session:', user);
-
-
-        
-        if (user) {
-          const { error } = await supabase1.from('pets').insert([
-            {
-              owner_id: user.id,
-              name: petName,
-              species: petSpecies,
-              breed: petBreed,
-              birthday: petBirthday,
-              description: petDescription
-            }
-          ]);
-          if (error) {
-            console.error('Error adding pet:', error.message);
-            alert('Error adding pet: ' + error.message);
-          } else {
-            alert('Pet added successfully!');
-            getPets(user); // 重新获取宠物信息
+        // 将宠物信息插入到数据库
+        const { error } = await supabase1.from('pets').insert([
+          {
+            owner_id: user.id,
+            name: petName,
+            species: petSpecies,
+            breed: petBreed,
+            birthday: petBirthday,
+            description: petDescription
           }
+        ]);
+
+        if (error) {
+          console.error('Error adding pet:', error.message);
+          alert('Error adding pet: ' + error.message);
         } else {
-          alert('You need to log in first!');
+          alert('Pet added successfully!');
+          getPets(user); // 重新获取宠物信息
         }
       }
 
@@ -113,4 +115,5 @@
   <div id="pet-list"></div>
 </body>
 </html>
+
 
