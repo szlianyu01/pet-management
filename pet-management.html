@@ -11,11 +11,11 @@
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
       const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // 确保 supabase1 初始化成功
-      console.log('Supabase client initialized:', supabase1);
-
       // 存储当前用户
       let currentUser = null;
+
+      // 确保 supabase1 初始化成功
+      console.log('Supabase client initialized:', supabase1);
 
       // 监听认证状态变化
       supabase1.auth.onAuthStateChange(async (event, session) => {
@@ -24,6 +24,7 @@
         if (event === 'SIGNED_IN') {
           currentUser = session.user;
           console.log('Current user from session:', currentUser);
+
           if (currentUser) {
             await getPets(currentUser);  // 在用户登录后加载宠物信息
           }
@@ -100,7 +101,7 @@
         } else {
           console.log('Pet added successfully:', data);  // 打印返回的数据
           alert('Pet added successfully!');
-          getPets(user); // 重新获取宠物信息并显示
+          await getPets(user); // 重新获取宠物信息并显示
         }
       }
 
