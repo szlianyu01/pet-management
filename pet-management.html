@@ -72,7 +72,7 @@
         const petDescription = prompt('Enter pet description:');
 
         const { user } = supabase1.auth;  // 获取当前用户
-
+        console.log('Supabase user:', user);
         if (user) {
           const { error } = await supabase1.from('pets').insert([
             {
