@@ -33,16 +33,23 @@
 
       // 获取当前用户的宠物
       async function getPets(user) {
+         console.log('into getpet');
+           
+        
         try {
           // 如果没有用户信息，退出
           if (!user) {
             console.log('User is not logged in');
             return;
           }
-
+          console.log('select from pets');
+          console.log('user is', user.id);
+          
+         
           // 获取宠物数据
           const { data, error } = await supabase1.from('pets').select('*').eq('owner_id', user.id);
           if (error) {
+            console.log('error fetching pets');
             console.error('Error fetching pets:', error.message);
             alert('Error fetching pets: ' + error.message);
           } else {
@@ -57,7 +64,8 @@
 
       // 显示宠物信息
       function displayPets(pets) {
-        const petList = document.getElementById('pet-list');
+          console.log('into displaypets');
+          const petList = document.getElementById('pet-list');
         petList.innerHTML = ''; // 清空宠物列表
         if (pets.length === 0) {
           petList.innerHTML = '<div>No pets found.</div>'; // 如果没有宠物，显示一条消息
@@ -70,6 +78,8 @@
 
       // 添加宠物
       async function addPet() {
+     console.log('into addpet');
+          
         const petName = prompt('Enter pet name:');
         const petSpecies = prompt('Enter pet species:');
         const petBreed = prompt('Enter pet breed:');
@@ -77,13 +87,16 @@
         const petDescription = prompt('Enter pet description:');
 
         const user = currentUser;  // 获取当前用户
-
+        console.log('prompt end');
+        console.log('currentuser',user);
+        
         if (!user) {
           alert('You need to log in first!');
           return;
         }
 
         // 将宠物信息插入到数据库
+           console.log('before insert');
         const { data, error } = await supabase1.from('pets').insert([
           {
             owner_id: user.id,
@@ -94,7 +107,8 @@
             description: petDescription
           }
         ]);
-
+        console.log('after insert');
+        
         if (error) {
           console.error('Error adding pet:', error.message);
           alert('Error adding pet: ' + error.message);
