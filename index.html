@@ -4,13 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pet Management</title>
+  <style>
+    /* 设置背景图片 */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-image: 'Petmanagement.png'; /* 替换为你的背景图片URL */
+      background-size: cover; /* 背景图片覆盖整个页面 */
+      background-position: center; /* 背景图片居中 */
+      background-attachment: fixed; /* 背景图片固定 */
+      height: 100vh; /* 页面高度 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* 页面内容的样式 */
+    .container {
+      background-color: rgba(0, 0, 0, 0.5); /* 透明黑色背景，增强可读性 */
+      padding: 40px;
+      border-radius: 10px;
+      color: white;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.5em;
+      margin-bottom: 30px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #f08a5d;
+      font-size: 1.2em;
+      margin: 10px;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #d96c3b; /* 鼠标悬停时链接颜色变化 */
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Welcome to Pet Management!</h1>
-  <p>Manage your pets with ease using Supabase.</p>
-  <a href="login.html">Login</a> | <a href="signup.html">Sign Up</a>
-  <br />
-  <a href="pet-management.html">Go to Pet Management</a>
+  <div class="container">
+    <h1>Welcome to Pet Management!</h1>
+    <p>Manage your pets with ease using Supabase.</p>
+    <a href="login.html">Login</a> | <a href="signup.html">Sign Up</a>
+    <br />
+    <a href="pet-management.html">Go to Pet Management</a>
+  </div>
 </body>
 </html>
-
