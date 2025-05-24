@@ -62,11 +62,11 @@
       // 连接 Supabase
       const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon key
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
 
       // 查询数据库获取宠物信息
       async function fetchPetData(petId) {
-        const { data: pet, error } = await supabase
+        const { data: pet, error } = await supabase1
           .from('pets')
           .select('*')
           .eq('id', petId)
