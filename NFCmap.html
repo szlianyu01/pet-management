@@ -101,14 +101,20 @@
           window.location.href = `tel:${ownerPhone}`;
         };
 
+
         // 设置发送定位信息到宠物主人按钮
-        document.getElementById('send-location').onclick = function () {
-          if (lat && lon) {
-            const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`; // Maps URL
-            const mailBody = `Current location: ${document.getElementById('address').innerText}\n\nClick the link to view the map: ${mapUrl}`;
-            window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=${encodeURIComponent(mailBody)}`;
-          }
-        };
+  document.getElementById('send-location').onclick = function (event) {
+    event.preventDefault();  // 阻止默认行为，防止页面刷新
+  
+    if (lat && lon) {
+      const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`; // Maps URL
+      const mailBody = `Current location: ${document.getElementById('address').innerText}\n\nClick the link to view the map: ${mapUrl}`;
+      // 打开邮件客户端，填充邮件内容
+      window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=${encodeURIComponent(mailBody)}`;
+    }
+  };
+
+        
 
         // 获取当前位置信息
         getLocation();
