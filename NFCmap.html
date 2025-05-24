@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pet Information</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .content {
+      background-color: white;
+      padding: 20px;
+      margin-top: 50px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #address {
+      margin-top: 20px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1>Pet Information</h1>
+    <p id="pet-info">Loading pet info...</p>
+    <div id="address"></div>
+    <button id="call-owner">Call Pet Owner</button>
+    <button id="send-location">Send Location to Owner</button>
+  </div>
+
+  <script>
+    // 获取 URL 中的 Pet ID 参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const petId = urlParams.get('id');  // 获取 URL 中的 'id' 参数（即 Pet ID）
+
+    if (!petId) {
+      document.getElementById('pet-info').innerText = 'No Pet ID found in URL';
+    } else {
+      // 连接 Supabase
+      const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon key
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+      // 查询数据库获取宠物信息
+      async function fetchPetData(petId) {
+        const { data: pet, error } = await supabase
+          .from('pets')
+          .select('*')
+          .eq('id', petId)
+          .single();
+
+        if (error) {
+          console.error("Error fetching pet data:", error);
+          document.getElementById('pet-info').innerText = 'Error fetching pet data.';
+          return;
+        }
+
+        // 显示宠物信息
+        document.getElementById('pet-info').innerHTML = `
+          <h2>${pet.name}</h2>
+          <p>Species: ${pet.species}</p>
+          <p>Breed: ${pet.breed}</p>
+          <p>Birthday: ${pet.birthday}</p>
+          <p>Description: ${pet.description}</p>
+        `;
+
+        // 显示宠物主人的电话和邮件地址
+        const ownerPhone = pet.owner_phone;
+        const ownerEmail = pet.owner_email;
+
+        // 设置拨打电话按钮
+        document.getElementById('call-owner').onclick = function () {
+          window.location.href = `tel:${ownerPhone}`;
+        };
+
+        // 设置发送定位信息到宠物主人按钮
+        document.getElementById('send-location').onclick = function () {
+          const currentLocation = document.getElementById('address').innerText;
+          window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=Current location: ${currentLocation}`;
+        };
+
+        // 获取当前位置信息
+        getLocation();
+      }
+
+      fetchPetData(petId);  // 调用函数，查询宠物信息
+    }
+
+    // 获取当前位置并显示地址信息
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        document.getElementById('address').innerText = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const apiKey = 'AIzaSyB_CWLQbTbqvqvvQe9sGLNQ_3aH8OPSKB4';  // 替换为你的 Google Maps API 密钥
+
+      // 使用 Google Geocoding API 获取地址信息
+      const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}`;
+      
+      fetch(geocodeUrl)
+        .then(response => response.json())
+        .then(data => {
+          const address = data.results[0].formatted_address;
+          document.getElementById('address').innerText = `Current Location: ${address}`;
+        })
+        .catch(error => {
+          console.error("Error getting location:", error);
+          document.getElementById('address').innerText = "Unable to fetch address.";
+        });
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          document.getElementById('address').innerText = "User denied the request for Geolocation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          document.getElementById('address').innerText = "Location information is unavailable.";
+          break;
+        case error.TIMEOUT:
+          document.getElementById('address').innerText = "The request to get user location timed out.";
+          break;
+        case error.UNKNOWN_ERROR:
+          document.getElementById('address').innerText = "An unknown error occurred.";
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
