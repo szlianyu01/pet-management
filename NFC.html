@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pet Management - NFC Scan</title>
+    <script>
+        if ("NFC" in window) {
+            document.addEventListener("DOMContentLoaded", function() {
+                // 开始 NFC 扫描
+                startNfcScan();
+            });
+        } else {
+            alert("Your device doesn't support NFC.");
+        }
+
+        async function startNfcScan() {
+            try {
+                const reader = new NFCReader();
+                const scan = await reader.scan();
+                const petId = scan.id; // 获取 Pet ID
+                console.log("Scanned Pet ID: ", petId);
+
+                // 在这里可以使用 Pet ID 去查询数据库，获取宠物信息
+                // 例如，查询 Supabase 或其他数据库
+
+                fetchPetData(petId);
+            } catch (err) {
+                console.error("Error scanning NFC:", err);
+            }
+        }
+
+        async function fetchPetData(petId) {
+            const supabaseUrl = 'https://your-supabase-url';
+            const supabaseKey = 'your-anon-key';
+            const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+            const { data: pet, error } = await supabase
+                .from('pets')
+                .select('*')
+                .eq('id', petId)
+                .single();
+
+            if (error) {
+                console.error("Error fetching pet data:", error);
+                return;
+            }
+
+            // 显示宠物信息
+            console.log('Pet Data: ', pet);
+            // 在页面显示宠物的相关信息
+            document.getElementById('pet-info').innerHTML = `
+                <h2>${pet.name}</h2>
+                <p>Species: ${pet.species}</p>
+                <p>Breed: ${pet.breed}</p>
+                <p>Birthday: ${pet.birthday}</p>
+                <p>Description: ${pet.description}</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Pet Management - NFC Scan</h1>
+    <p>Scan an NFC tag to get the pet's details.</p>
+    <div id="pet-info"></div>
+</body>
+</html>
