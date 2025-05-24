@@ -1,94 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pet Management - NFC Scan</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-    }
-    .container {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 8px;
-      width: 60%;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    h1 {
-      font-size: 1.8em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pet Management - Simulate NFC</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Scan NFC Tag to Get Pet Information</h1>
-    <button onclick="startNfcScan()">Scan NFC Tag</button>
-    <p id="pet-info"></p>
-  </div>
+    <h1>Pet Information</h1>
+    <p>Scan NFC Tag to get pet info.</p>
+    <p id="pet-info">No Pet ID found.</p>
 
-  <script>
-    // 初始化 Supabase
-    const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';  // 替换为你的 anon key
-    const supabase1 = supabase.createClient(supabaseUrl, supabaseKey);
+    <script>
+        // 模拟获取 Pet ID 的 URL 参数
+        // 假设扫描 NFC 后，URL 为 https://yourwebsite.com/pet/123
+        const petId = window.location.search.split('=')[1] || '123';  // 获取 URL 中的 petId 参数（默认用 123）
 
-    // 检查是否支持 NFC
-    if ("NFC" in window) {
-      document.addEventListener("DOMContentLoaded", function() {
-        startNfcScan();
-      });
-    } else {
-      alert("Your device doesn't support NFC.");
-    }
+        // 假设你已经连接了 Supabase，下面是查询宠物信息的逻辑
+        const supabaseUrl = 'https://zkhgypnrzyzqdpnkgido.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraGd5cG5yenl6cWRwbmtnaWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NTc2ODksImV4cCI6MjA2MzEzMzY4OX0.dhA4gagsbf-U194sil3JsgobqWYUb85_rpd7mD8Ai9I';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // NFC 扫描
-    async function startNfcScan() {
-      try {
-        const reader = new NFCReader();
-        const scan = await reader.scan();
-        const petId = scan.id; // 获取 Pet ID
-        console.log(`Scanned Pet ID: ${petId}`);
+        async function fetchPetData(petId) {
+            const { data: pet, error } = await supabase
+                .from('pets')
+                .select('*')
+                .eq('id', petId)
+                .single();
 
-        // 查询数据库获取宠物信息
+            if (error) {
+                console.error("Error fetching pet data:", error);
+                document.getElementById('pet-info').innerText = "Error fetching pet data.";
+                return;
+            }
+
+            // 显示宠物信息
+            document.getElementById('pet-info').innerHTML = `
+                <h2>${pet.name}</h2>
+                <p>Species: ${pet.species}</p>
+                <p>Breed: ${pet.breed}</p>
+                <p>Birthday: ${pet.birthday}</p>
+                <p>Description: ${pet.description}</p>
+            `;
+        }
+
+        // 调用 fetchPetData 函数，模拟从 URL 获取宠物信息
         fetchPetData(petId);
-      } catch (err) {
-        console.error("Error scanning NFC:", err);
-        document.getElementById('pet-info').innerHTML = "NFC Scan failed.";
-      }
-    }
-
-    // 使用 Pet ID 查询宠物信息
-    async function fetchPetData(petId) {
-      const { data: pet, error } = await supabase1
-        .from('pets')
-        .select('*')
-        .eq('id', petId)
-        .single();
-
-      if (error) {
-        console.error("Error fetching pet data:", error);
-        document.getElementById('pet-info').innerHTML = "Error fetching pet data.";
-        return;
-      }
-
-      // 显示宠物信息
-      document.getElementById('pet-info').innerHTML = `
-        <h2>${pet.name}</h2>
-        <p>Species: ${pet.species}</p>
-        <p>Breed: ${pet.breed}</p>
-        <p>Birthday: ${pet.birthday}</p>
-        <p>Description: ${pet.description}</p>
-      `;
-    }
-  </script>
+    </script>
 </body>
 </html>
