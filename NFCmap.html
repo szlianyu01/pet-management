@@ -104,7 +104,9 @@
         // 设置发送定位信息到宠物主人按钮
         document.getElementById('send-location').onclick = function () {
           const currentLocation = document.getElementById('address').innerText;
-          window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=Current location: ${currentLocation}`;
+          const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`; // Maps URL
+          const mailBody = `Current location: ${currentLocation}\n\nClick the link to view the map: ${mapUrl}`;
+          window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=${encodeURIComponent(mailBody)}`;
         };
 
         // 获取当前位置信息
@@ -168,4 +170,5 @@
   </script>
 </body>
 </html>
+
 
