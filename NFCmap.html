@@ -103,10 +103,11 @@
 
         // 设置发送定位信息到宠物主人按钮
         document.getElementById('send-location').onclick = function () {
-          const currentLocation = document.getElementById('address').innerText;
-          const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`; // Maps URL
-          const mailBody = `Current location: ${currentLocation}\n\nClick the link to view the map: ${mapUrl}`;
-          window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=${encodeURIComponent(mailBody)}`;
+          if (lat && lon) {
+            const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`; // Maps URL
+            const mailBody = `Current location: ${document.getElementById('address').innerText}\n\nClick the link to view the map: ${mapUrl}`;
+            window.location.href = `mailto:${ownerEmail}?subject=Pet Location&body=${encodeURIComponent(mailBody)}`;
+          }
         };
 
         // 获取当前位置信息
@@ -117,6 +118,7 @@
     }
 
     // 获取当前位置并显示地址信息
+    let lat, lon;  // 定义 lat 和 lon 变量，在多个函数中使用
     function getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -126,8 +128,8 @@
     }
 
     function showPosition(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+      lat = position.coords.latitude;
+      lon = position.coords.longitude;
       const apiKey = 'AIzaSyB_CWLQbTbqvqvvQe9sGLNQ_3aH8OPSKB4';  // 替换为你的 Google Maps API 密钥
 
       // 使用 Google Geocoding API 获取地址信息
@@ -170,5 +172,4 @@
   </script>
 </body>
 </html>
-
 
