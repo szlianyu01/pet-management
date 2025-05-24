@@ -1,50 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Get Location</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pet Management</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    // 先获取用户位置
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // 使用 Google Maps API 获取地址
+      getAddressFromCoordinates(latitude, longitude);
+    }, function(error) {
+      console.error("Error getting location:", error);
+    });
+
+    // 使用 Google Geocoding API 获取地址
+    async function getAddressFromCoordinates(latitude, longitude) {
+      const apiKey = 'AIzaSyB_CWLQbTbqvqvvQe9sGLNQ_3aH8OPSKB4';  // 这里替换成你的 API 密钥
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.status === 'OK') {
+          const address = data.results[0].formatted_address;
+          console.log('Address: ', address);
+          alert(`Address: ${address}`);
+        } else {
+          console.log('Geocoding failed: ', data.status);
+        }
+      } catch (error) {
+        console.error('Error fetching address: ', error);
+      }
+    }
+  </script>
 </head>
 <body>
-    <h1>Get Your Location</h1>
-    <p id="location"></p>
-
-    <script>
-        // 获取位置信息
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            console.log("Latitude: " + latitude + ", Longitude: " + longitude);
-            // 显示经纬度
-            document.getElementById('location').textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-
-            // 反向地理编码获取地址
-            getAddressFromCoordinates(latitude, longitude);
-        }, function(error) {
-            console.error("Error getting location:", error);
-        });
-
-        // 反向地理编码
-        async function getAddressFromCoordinates(latitude, longitude) {
-            const apiKey = 'AIzaSyB_CWLQbTbqvqvvQe9sGLNQ_3aH8OPSKB4';  // 替换为你的 API 密钥
-            const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.status === 'OK') {
-                    const address = data.results[0].formatted_address;
-                    console.log('Address: ', address);
-                    document.getElementById('location').textContent += ` | Address: ${address}`;
-                } else {
-                    console.log('Geocoding failed: ', data.status);
-                }
-            } catch (error) {
-                console.error('Error fetching address: ', error);
-            }
-        }
-    </script>
+  <h1>Pet Management - Locate Your Lost Pet</h1>
+  <p>Scan the NFC tag to retrieve pet information and location.</p>
 </body>
 </html>
